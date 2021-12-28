@@ -3,12 +3,12 @@
 #include<string.h>
 #define MAX 2560
 void databasefun(char arr[MAX][MAX]);
-int len(char str[])
+/*int len(char str[])
     {
         int i;
         for (i = 0; str[i] != '\0'; ++i);
         return i;
-    }
+    }*/
 void create(char arr[][MAX]){
 	FILE *fp;
 	if(fp=fopen(arr[2],"r")){
