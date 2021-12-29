@@ -2,61 +2,66 @@
 #include<stdlib.h>
 #include<string.h>
 #define MAX 2560
-void databasefun(char arr[MAX][MAX]);
-/*int len(char str[])
-    {
-        int i;
-        for (i = 0; str[i] != '\0'; ++i);
-        return i;
-    }*/
-void create(char arr[][MAX]){
+void insert(char words[][MAX] , int count){
 	FILE *fp;
-	if(fp=fopen(arr[2],"r")){
-		fp = fopen(arr[2],"a");
-		for(int i=3; i<20 ; i++){
-			fprintf(fp,"%s(%s)\t", arr[i],arr[i++]);
+	if(fp = fopen(words[2] , "r")){
+		fp = fopen(words[2] , "a");
+		for(int i=3; i<count-1 ; i++){
+			fprintf(fp ,"%s\t\t" ,words[i]);
 		}
-	printf("\n");
+		fprintf(fp,"\n");
+		
 	}
 	else{
-		fp = fopen(arr[2], "w");
-		for(int i=3; i<20 ; i++){
-			fprintf(fp,"%s(%s)\t", arr[i],arr[i++]);
 		
-		}
-	printf("\n");
+		printf("Table does not exists\n");
+		
 	}
-	
 }
-void databasefun(char arr[][MAX]){
-	if(strcmp("create",arr[0]) == 0){
-		printf("creating table..\n");
-		create(arr);
-	}	
-	else
-		printf("error creating the table..\n");
-	
-	
+void create(char words[][MAX] , int count){
+	FILE *fp;
+	if(fp = fopen(words[2] , "r")){
+		printf("Table already exists\n");
+	}
+	else{
+		fp = fopen(words[2] , "w");
+		for(int i=3; i<count-1 ; i++){
+			fprintf(fp ,"%s(%s)\t" ,words[i],words[i++]);
+			fputs("\n" , fp);
+		}
+	}
+
 }
-void keywords(char str[], int len){
-	char word[MAX][MAX];
+void databasefun(char words[][MAX] , int size){
+	for(int i = 0; i<size ; i++){
+		if(strcmp(words[i],"create") == 0){
+			create(words,size);
+		}
+		else if(strcmp(words[i],"insert") == 0){
+			insert(words,size);
+		}
+	}
+}
+void keywords(char str[] , int size){
+	char words[MAX][MAX];
 	int i,j,k;
 	j=0;k=0;
-	for(i = 0 ; i < len; i++ ){
-		if(str[i] == ' ' || str[i] == '(' || str[i] == ')' || str[i] == ',' ||  str[i] == '\n'){
-			word[j][k] = '\0';
-			j++;
-			k = 0;
+	int count = 0;
+	for(i = 0 ; i < size; i++ ){
+		if(str[i] == ' ' || str[i] == '(' || str[i] == ')' || str[i] == ',' || str[i] == ';' ||  str[i] == '\n'){
+				words[j][k] = '\0';
+				j++;
+				k = 0;
+				count++;
 		}
 		else{
-			word[j][k] = str[i];
+			words[j][k] = str[i];
 			k++;
 		}
 	}
 
-	databasefun(word);
+	databasefun(words,count);	
 }
-
 char *inputQuery(FILE *fp,int size){
 	char *str;
 	int len = 0;
@@ -73,9 +78,10 @@ char *inputQuery(FILE *fp,int size){
 		}
 	}
 	str[len++]='\0';
-	//printf("%s\n", str);
+	printf("%s\n", str);
 	//return realloc(str,sizeof(*str)*len);
 	keywords(str,len);
+	
 	
 }
 
@@ -83,6 +89,6 @@ int main(){
 	char *m;
 	printf("mysql>");
 	m = inputQuery(stdin,20);
+	
 	//free(m);
 }
-
