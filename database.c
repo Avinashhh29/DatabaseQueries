@@ -4,12 +4,30 @@
 #define MAX 2560
 
 void inputQuery(FILE *fp,int size);
+
 void syntaxCheck(char *str);
+
 int len(char string[]);
+
 void keywords(char str[] , int size);
+
 void databasefun(char words[][MAX] , int size);
+
 void create(char words[][MAX] , int count);
+
 void insert(char words[][MAX] , int count);
+
+void main(){
+	
+	do{
+	printf("mysql>");
+
+	inputQuery(stdin,20);	
+
+	//syntaxCheck(m,strlen);
+
+	}while(1);
+}
 
 
 void insert(char words[][MAX] , int count){
@@ -28,13 +46,15 @@ void insert(char words[][MAX] , int count){
 		
 		fprintf(fp,"\n");
 		
-		printf("Inserting values into tables..\n");
+		printf("Inserting values into tables..\n");  
 	
 	}	else{	
 		
 			printf("Table does not exists\n");
 		
 		}
+	
+	fclose(fp);
 
 }
 
@@ -54,12 +74,14 @@ void create(char words[][MAX] , int count){
 			for(int i = 3; i < count-1 ; i++){
 	
 				fprintf(fp ,"%s(%s)\t" , words[i] , words[i++]);
-	
+					
 			}
 	
 			printf("Creating  Table.. \n");
 	
 		}
+	
+	fclose(fp);
 }
 
 
@@ -208,10 +230,3 @@ void inputQuery(FILE *fp,int size){
 }
 
 
-int main(){	
-	printf("mysql>");
-	inputQuery(stdin,20);	
-	//syntaxCheck(m,strlen);
-
-	return 0;
-}
